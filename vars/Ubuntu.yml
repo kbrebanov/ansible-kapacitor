@@ -1,0 +1,5 @@
+---
+# vars file for kapacitor (Ubuntu specific)
+
+kapacitor_packages:
+  - kapacitor={{ kapacitor_version }}*
