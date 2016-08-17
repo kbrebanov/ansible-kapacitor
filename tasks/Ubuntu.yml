@@ -12,7 +12,7 @@
 - name: Configure InfluxDB APT repository
   become: yes
   apt_repository:
-    repo: 'deb https://repos.influxdata.com/ubuntu {{ ansible_distribution_release }} stable'
+    repo: 'deb https://repos.influxdata.com/ubuntu {{ ansible_distribution_release }} {{ kapacitor_release_channel }}'
     state: present
   tags:
     - kapacitor
