@@ -3,6 +3,8 @@
 
 kapacitor_version: 0.13
 
+kapacitor_release_channel: stable
+
 kapacitor_hostname: localhost
 kapacitor_data_dir: /var/lib/kapacitor
 
