@@ -1,7 +1,7 @@
 ---
 # defaults file for kapacitor
 
-kapacitor_version: 0.13
+kapacitor_version: 1.0.0
 
 kapacitor_release_channel: stable
 
@@ -41,6 +41,11 @@ kapacitor_influxdb_ssl_ca: ''
 kapacitor_influxdb_ssl_cert: ''
 kapacitor_influxdb_ssl_key: ''
 kapacitor_influxdb_insecure_skip_verify: false
+kapacitor_influxdb_startup_timeout: 5m
+kapacitor_influxdb_disable_subscriptions: false
+kapacitor_influxdb_subscription_protocol: http
+kapacitor_influxdb_subscriptions_sync_interval: 1m0s
+kapacitor_influxdb_udp_bind: ''
 kapacitor_influxdb_udp_buffer: 1000
 kapacitor_influxdb_udp_read_buffer: 0
 kapacitor_influxdb_subscriptions: {}
@@ -83,6 +88,16 @@ kapacitor_slack_channel: ''
 kapacitor_slack_global: false
 kapacitor_slack_state_changes_only: false
 
+kapacitor_telegram_enabled: false
+kapacitor_telegram_url: https://api.telegram.org/bot
+kapacitor_telegram_token: ''
+kapacitor_telegram_chat_id: ''
+kapacitor_telegram_parse_mode: Markdown
+kapacitor_telegram_disable_web_page_preview: false
+kapacitor_telegram_disable_notification: false
+kapacitor_telegram_global: false
+kapacitor_telegram_state_changes_only: false
+
 kapacitor_hipchat_enabled: false
 kapacitor_hipchat_url: https://subdomain.hipchat.com/v2/room
 kapacitor_hipchat_room: ''
@@ -106,7 +121,7 @@ kapacitor_reporting_url: https://usage.influxdata.com
 kapacitor_stats_enabled: true
 kapacitor_stats_interval: 10s
 kapacitor_stats_database: _kapacitor
-kapacitor_stats_retention_policy: default
+kapacitor_stats_retention_policy: autogen
 
 kapacitor_talk_enabled: false
 kapacitor_talk_url: https://jianliao.com/v2/services/webhook/uuid

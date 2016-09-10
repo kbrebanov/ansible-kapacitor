@@ -65,7 +65,17 @@ data_dir = "{{ kapacitor_data_dir }}"
   default = false
 {% endif %}
   name = "{{ kapacitor_influxdb_name }}"
-  urls = ["{{ kapacitor_influxdb_urls | join(', ') }}"]
+{% if kapacitor_influxdb_urls %}
+  urls = [
+{% for url in kapacitor_influxdb_urls %}
+{% if not loop.last %}
+    "{{ url }}",
+{% else %}
+    "{{ url }}"
+{% endif %}
+{% endfor %}
+  ]
+{% endif %}
   username = "{{ kapacitor_influxdb_username }}"
   password = "{{ kapacitor_influxdb_password }}"
   timeout = {{ kapacitor_influxdb_timeout }}
@@ -83,18 +93,43 @@ data_dir = "{{ kapacitor_data_dir }}"
 {% else %}
   insecure-skip-verify = false
 {% endif %}
+  startup-timeout = "{{ kapacitor_influxdb_startup_timeout }}"
+{% if kapacitor_influxdb_disable_subscriptions %}
+  disable-subscriptions = true
+{% else %}
+  disable-subscriptions = false
+{% endif %}
+  subscription-protocol = "{{ kapacitor_influxdb_subscription_protocol }}"
+  subscriptions-sync-interval = "{{ kapacitor_influxdb_subscriptions_sync_interval }}"
+  udp-bind = "{{ kapacitor_influxdb_udp_bind }}"
   udp-buffer = {{ kapacitor_influxdb_udp_buffer }}
   udp-read-buffer = {{ kapacitor_influxdb_udp_read_buffer }}
 
   [influxdb.subscriptions]
-  {% for db, policies in kapacitor_influxdb_subscriptions %}
-    {{ db }} = ["{{ policies | join(', ') }}"]
-  {% endfor %}
+{% for db, policies in kapacitor_influxdb_subscriptions %}
+    {{ db }} = [
+{% for policy in policies %}
+{% if not loop.last %}
+      "{{ policy }}",
+{% else %}
+      "{{ policy }}"
+{% endif %}
+{% endfor %}
+    ]
+{% endfor %}
 
   [influxdb.excluded-subscriptions]
-  {% for db, policies in kapacitor_influxdb_excluded_subscriptions %}
-    {{ db }} = ["{{ policies | join(', ') }}"]
-  {% endfor %}
+{% for db, policies in kapacitor_influxdb_excluded_subscriptions %}
+    {{ db }} = [
+{% for policy in policies %}
+{% if not loop.last %}
+      "{{ policy }}",
+{% else %}
+      "{{ policy }}"
+{% endif %}
+{% endfor %}
+    ]
+{% endfor %}
 
 [smtp]
 {% if kapacitor_smtp_enabled %}
@@ -191,6 +226,37 @@ data_dir = "{{ kapacitor_data_dir }}"
   global = false
 {% endif %}
 {% if kapacitor_slack_state_changes_only %}
+  state-changes-only = true
+{% else %}
+  state-changes-only = false
+{% endif %}
+
+[telegram]
+{% if kapacitor_telegram_enabled %}
+  enabled = true
+{% else %}
+  enabled = false
+{% endif %}
+  url = "{{ kapacitor_telegram_url }}"
+  token = "{{ kapacitor_telegram_token }}"
+  chat-id = "{{ kapacitor_telegram_chat_id }}"
+  parse-mode = "{{ kapacitor_telegram_parse_mode }}"
+{% if kapacitor_telegram_disable_web_page_preview %}
+  disable-web-page-preview = true
+{% else %}
+  disable-web-page-preview = false
+{% endif %}
+{% if kapacitor_telegram_disable_notification %}
+  disable-notification = true
+{% else %}
+  disable-notification = false
+{% endif %}
+{% if kapacitor_telegram_global %}
+  global = true
+{% else %}
+  global = false
+{% endif %}
+{% if kapacitor_telegram_state_changes_only %}
   state-changes-only = true
 {% else %}
   state-changes-only = false

@@ -6,8 +6,8 @@
   tags:
     - kapacitor
 
-- include: Ubuntu.yml
-  when: ansible_distribution == "Ubuntu"
+- name: Include distribution specific tasks
+  include: "{{ ansible_distribution }}.yml"
   tags:
     - kapacitor
 
