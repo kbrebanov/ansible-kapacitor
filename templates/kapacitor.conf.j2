@@ -106,7 +106,18 @@ data_dir = "{{ kapacitor_data_dir }}"
   udp-read-buffer = {{ kapacitor_influxdb_udp_read_buffer }}
 
   [influxdb.subscriptions]
-{% for db, policies in kapacitor_influxdb_subscriptions %}
+{% for db, policies in kapacitor_influxdb_subscriptions.iteritems() %}
+{% if not loop.last %}
+    {{ db }} = [
+{% for policy in policies %}
+{% if not loop.last %}
+      "{{ policy }}",
+{% else %}
+      "{{ policy }}"
+{% endif %}
+{% endfor %}
+    ],
+{% else %}
     {{ db }} = [
 {% for policy in policies %}
 {% if not loop.last %}
@@ -116,10 +127,22 @@ data_dir = "{{ kapacitor_data_dir }}"
 {% endif %}
 {% endfor %}
     ]
+{% endif %}
 {% endfor %}
 
   [influxdb.excluded-subscriptions]
-{% for db, policies in kapacitor_influxdb_excluded_subscriptions %}
+{% for db, policies in kapacitor_influxdb_excluded_subscriptions.iteritems() %}
+{% if not loop.last %}
+    {{ db }} = [
+{% for policy in policies %}
+{% if not loop.last %}
+      "{{ policy }}",
+{% else %}
+      "{{ policy }}"
+{% endif %}
+{% endfor %}
+    ],
+{% else %}
     {{ db }} = [
 {% for policy in policies %}
 {% if not loop.last %}
@@ -129,6 +152,7 @@ data_dir = "{{ kapacitor_data_dir }}"
 {% endif %}
 {% endfor %}
     ]
+{% endif %}
 {% endfor %}
 
 [smtp]
@@ -143,7 +167,15 @@ data_dir = "{{ kapacitor_data_dir }}"
   password = "{{ kapacitor_smtp_password }}"
   from = "{{ kapacitor_smtp_from }}"
 {% if kapacitor_smtp_to %}
-  to = ["{{ kapacitor_smtp_to | join(', ') }}"]
+  to = [
+{% for to in kapacitor_smtp_to %}
+{% if not loop.last %}
+    "{{ to }}",
+{% else %}
+    "{{ to }}"
+{% endif %}
+{% endfor %}
+  ]
 {% endif %}
 {% if kapacitor_smtp_no_verify %}
   no-verify = true
@@ -170,10 +202,26 @@ data_dir = "{{ kapacitor_data_dir }}"
 {% endif %}
   api-key = "{{ kapacitor_opsgenie_api_key }}"
 {% if kapacitor_opsgenie_teams %}
-  teams = ["{{ kapacitor_opsgenie_teams | join(', ') }}"]
+  teams = [
+{% for team in kapacitor_opsgenie_teams %}
+{% if not loop.last %}
+    "{{ team }}",
+{% else %}
+    "{{ team }}"
+{% endif %}
+{% endfor %}
+  ]
 {% endif %}
 {% if kapacitor_opsgenie_recipients %}
-  recipients = ["{{ kapacitor_opsgenie_recipients | join(', ') }}"]
+  recipients = [
+{% for recipient in kapacitor_opsgenie_recipients %}
+{% if not loop.last %}
+    "{{ recipient }}",
+{% else %}
+    "{{ recipient }}"
+{% endif %}
+{% endfor %}
+  ]
 {% endif %}
   url = "{{ kapacitor_opsgenie_url }}"
   recovery_url = "{{ kapacitor_opsgenie_recovery_url }}"
