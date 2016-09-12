@@ -17,7 +17,7 @@
     src: kapacitor.conf.j2
     dest: /etc/kapacitor/kapacitor.conf
     owner: root
-    group: root
+    group: "{{ kapacitor_group }}"
     mode: 0644
   notify:
     - restart kapacitor

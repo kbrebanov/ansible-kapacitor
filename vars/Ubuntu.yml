@@ -3,3 +3,4 @@
 
 kapacitor_packages:
   - kapacitor={{ kapacitor_version }}*
+kapacitor_group: kapacitor
