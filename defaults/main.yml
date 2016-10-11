@@ -1,7 +1,7 @@
 ---
 # defaults file for kapacitor
 
-kapacitor_version: 1.0.0
+kapacitor_version: 1.0.2
 
 kapacitor_release_channel: stable
 
